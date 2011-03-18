@@ -1,0 +1,12 @@
+A very simple chat demo that uses websockets. I used it in a QCon
+presentation. It uses misultin and JQuery v1.5, jquery.1.5.min.js.
+
+Run it by first starting the backend:
+
+1> chat_backend:start_link().
+
+then the actual server:
+
+2> chat_server:start_link(8080).
+
+The argument is the port to use. In the browser you then open the chat window with http://1.2.3.4:8080/chat.
