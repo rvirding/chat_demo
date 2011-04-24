@@ -10,3 +10,6 @@ then the actual server:
 2> chat_server:start_link(8080).
 
 The argument is the port to use. In the browser you then open the chat window with http://1.2.3.4:8080/chat.
+
+The LFE versions of chat_backend and chat_server are alos included. To
+run these you need the newly released LFE v0.6.2.
