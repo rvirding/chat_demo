@@ -50,13 +50,11 @@
 	    (host (: proplists get_value 'Host (call req 'get 'headers))))
        (call req 'ok (list bef host aft))))
     ((tuple 'GET (list file))
-     (case (: filelib is_regular file)
-       ('true
-	(: lfe_io fwrite '"hh: sending ~p\n" (list file))
-	(call req 'file file))
-       ('false
-	(: lfe_io fwrite '"hh: no file ~p\n" (list file))
-	(call req 'respond 404 () (list '"no file: " file)))))
+     (if (: filelib is_regular file)
+       (progn (: lfe_io fwrite '"hh: sending ~p\n" (list file))
+	      (call req 'file file))
+       (progn (: lfe_io fwrite '"hh: no file ~p\n" (list file))
+	      (call req 'respond 404 () (list '"no file: " file)))))
     (_ (: lfe_io fwrite '"hh: ignoring\n"))))
 
 (defun handle-websocket (ws)
