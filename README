@@ -1,15 +1,19 @@
-A very simple chat demo that uses websockets. I used it in a QCon
-presentation. It uses misultin and JQuery v1.5, jquery.1.5.min.js.
+A very simple chat demo that uses websockets. I have used it in a QCon presentation. It uses cowboy and JQuery.
 
-Run it by first starting the backend:
+After doing 'make' two ways of starting chat_demo are:
 
-1> chat_backend:start_link().
+1) Start a chat_demo erlang release with an Erlang shell:
 
-then the actual server:
+$ ./_rel/chat_demo/bin/chat_demo console
 
-2> chat_server:start_link(8080).
+2) If you have already built cowboy, ranch and cowlib and they are in you erlang path you can do:
 
-The argument is the port to use. In the browser you then open the chat window with http://1.2.3.4:8080/chat.
+1> chat_demo:start().
+ok
+2>
 
-The LFE versions of chat_backend and chat_server are alos included. To
-run these you need the newly released LFE v0.6.2.
+You can then access the chat system from the browser by going to port 8080 on the current machine.
+
+The LFE versions of chat_server and chat_ws_handler are also included.
+
+NOTE: the browser front-end is severely lacking and needs much work. To send a message got into the text box and write and send "msg ! the message you want to send". To set set your nick write and send "nick ! my-nick". The spaces around the ! are critical. Don't ask.

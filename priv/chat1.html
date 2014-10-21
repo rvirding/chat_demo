@@ -1,0 +1,94 @@
+<html>
+  <head>
+    <script type="text/javascript" src="jquery-1.5.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+	  if ("WebSocket" in window) {
+	      // browser supports websockets
+	      // var ws = new WebSocket("ws://localhost:8080/service");
+	      var ws = new WebSocket("ws://%%HOST:PORT%%/service");
+	      ws.onopen = function() {
+		  // websocket is connected
+		  addStatus("websocket connected!");
+		  // send hello data to server.
+		  ws.send("hello server!");
+	      };
+	      ws.onmessage = function(evt) {
+		  // Message has form "<dest> ! <text>"
+		  // like and Erlang send.
+		  var data = evt.data;
+	          var i = data.indexOf(" ! ");  //From server
+	          var tag = data.slice(0, i);
+	          if (tag == "output") {	//Chat output
+	              addOutput(data.slice(i+3));
+	          }
+		  else if (tag == "status") {	//Status info
+		      addStatus(data.slice(i+3));
+		  }
+                  else {			//Unknown, just log it
+		      addStatus("server sent: '" + tag + "'" + data + "'");
+		  };
+              };
+              ws.onclose = function() {
+		  // websocket was closed
+		  addStatus("websocket was closed");
+	      };
+      	      // Other events
+	      send_input = function(id, clear) {
+                  var val=$("#"+id).val();
+		  if (clear) { $("#"+id).val(""); };
+		  ws.send(id + " ! " + val);
+		  return true;		// must do this
+	      };
+	  } else {
+	      // browser does not support websockets
+	      addStatus("sorry, your browser does not support websockets.");
+	  };
+      });
+
+      function addStatus(text){
+	  var date = new Date();
+          var old = document.getElementById('status').innerHTML;
+	  document.getElementById('status').innerHTML =
+              date + ": " + text + "<br>" + old;
+      };
+      function addOutput(text){
+          var old = document.getElementById('output').innerHTML;
+	  document.getElementById('output').innerHTML =
+	      old + text + "<br>";				
+      };
+
+    </script>
+  </head>
+  <body>
+
+    <h1>Sample chat client 1</h1>
+    <fieldset>
+      <p>Nick: <input id="nick" onchange="return send_input('nick', false);"
+		      size ="42">
+
+      <div id="output"></div>
+
+<!--      <textarea id="output" readonly="readonly" style="font-size:normal"
+		cols="100" rows="20">
+      </textarea>
+-->
+      <input id="msg" onchange="return send_input('msg', true);"
+	     size ="100">
+    </fieldset>
+
+    <div id="status"></div>
+
+    <style>
+      #output { height: 300px; overflow: auto; width: 80%; border: 1px solid #eee; font: 13px Helvetica, Arial; }
+      #output p { padding: 8px; margin: 0; }
+      #output p:nth-child(odd) { background: #F6F6F6; }
+      #form { width: 782px; background: #333; padding: 5px 10px; display: none; }
+      #form input[type=text] { width: 700px; padding: 5px; background: #fff; border: 1px solid #fff; }
+      #form input[type=submit] { cursor: pointer; background: #999; border: none; padding: 6px 8px; -moz-border-radius: 8px; -webkit-border-radius: 8px; margin-left: 5px; text-shadow: 0 1px 0 #fff; }
+      #form input[type=submit]:hover { background: #A2A2A2; }
+      #form input[type=submit]:active { position: relative; top: 2px; }
+    </style>
+
+  </body>
+</html>

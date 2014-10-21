@@ -1,0 +1,15 @@
+%% Feel free to use, reuse and abuse the code in this file.
+
+{application, chat_demo, [
+	{description, "Cowboy chat demo."},
+	{vsn, "1"},
+	{modules, []},
+	{registered, [chat_demo_sup,chat_server]},
+	{applications, [
+		kernel,
+		stdlib,
+		cowboy
+	]},
+	{mod, {chat_demo_app, []}},
+	{env, []}
+]}.
