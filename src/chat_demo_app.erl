@@ -12,7 +12,7 @@
 start(_Type, _Args) ->
     One = {'_',
 	   [
-	    {"/", cowboy_static, {priv_file, chat_demo, "index_cowboy.html"}},
+	    {"/", cowboy_static, {priv_file, chat_demo, "index.html"}},
 	    {"/websocket", chat_ws_handler, []},
 	    {"/static/[...]", cowboy_static, {priv_dir, chat_demo, "static"}}
 	   ]},

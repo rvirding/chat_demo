@@ -17,6 +17,7 @@
               $('#status').append('<p><span style="color: green;">websockets are supported </span></p>');
               connect();
           };
+              $("#nick_name").hide(); 	
               $("#connected").hide(); 	
               $("#content").hide(); 	
       };
@@ -46,16 +47,25 @@
 
       function sendTxt() {
           if(websocket.readyState == websocket.OPEN){
-              txt = $("#send_txt").val();
+              txt = "msg ! " + $("#send_txt").val();
               websocket.send(txt);
-              showScreen('sending: ' + txt); 
           } else {
-               showScreen('websocket is not connected'); 
+              showScreen('websocket is not connected'); 
+          };
+      };
+
+      function sendNick() {
+          if(websocket.readyState == websocket.OPEN){
+              txt = "nick ! " + $("#send_nick").val();
+              websocket.send(txt);
+          } else {
+              showScreen('websocket is not connected'); 
           };
       };
 
       function onOpen(evt) { 
           showScreen('<span style="color: green;">CONNECTED </span>'); 
+          $("#nick_name").fadeIn('slow');
           $("#connected").fadeIn('slow');
           $("#content").fadeIn('slow');
       };  
@@ -65,7 +75,26 @@
       };  
 
       function onMessage(evt) { 
-          showScreen('<span style="color: blue;">RESPONSE: ' + evt.data+ '</span>'); 
+          var data = evt.data;
+          var i = data.indexOf(" ! ");
+	  var tag = data.slice(0, i);
+	  var type = "";
+	  var color = "";
+	  if (tag == "output") {
+	      type = "MSG: ";
+	      color = "blue";
+	      data = data.slice(i+3);
+	  }
+	  else if (tag == "status") {
+	      type = "STATUS: ";
+	      color = "orange";
+	      data = data.slice(i+3);
+	  }
+	  else {
+	      type = "SERVER: ";
+	      color = "red";
+	  }
+          showScreen('<span style="color: ' + color + ';">' + type + data + '</span>');
       };  
 
       function onError(evt) {
@@ -99,7 +128,13 @@
       <div id="connected">				
 	<p>
 	  <input type='text' id="send_txt" value=></input>
-	  <button type="button" onclick="sendTxt();">send</button>
+	  <button type="button" onclick="sendTxt();">msg</button>
+	</p>
+      </div>
+      <div id="nick_name">				
+	<p>
+	  <input type='text' id="send_nick" value=></input>
+	  <button type="button" onclick="sendNick();">nick</button>
 	</p>
       </div>
 

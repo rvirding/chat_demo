@@ -16,4 +16,4 @@ You can then access the chat system from the browser by going to port 8080 on th
 
 The LFE versions of chat_server and chat_ws_handler are also included.
 
-NOTE: the browser front-end is severely lacking and needs much work. To send a message got into the text box and write and send "msg ! the message you want to send". To set set your nick write and send "nick ! my-nick". The spaces around the ! are critical. Don't ask.
+NOTE: the browser front-end is severely lacking and needs much work.
